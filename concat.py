@@ -16,7 +16,8 @@ def main():
     info = []
     for i in range(len(images)):
         image = {}
-        image["name"] = image_names[i].split("/")[-1]
+        aux = Path(image_names[i])
+        image["name"] = aux.name
         image["width"] = widths[i]
         image["height"] = heights[i]
         info.append(image)
