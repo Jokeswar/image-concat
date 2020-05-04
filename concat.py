@@ -10,14 +10,10 @@ def main():
     images = [Image.open(x) for x in image_names]
     widths, heights = zip(*(i.size for i in images))
 
-    total_width = sum(widths)
-    max_height = max(heights)
-
     info = []
     for i in range(len(images)):
         image = {}
-        aux = Path(image_names[i])
-        image["name"] = aux.name
+        image["name"] = Path(image_names[i]).name
         image["width"] = widths[i]
         image["height"] = heights[i]
         info.append(image)
@@ -26,14 +22,9 @@ def main():
         data = json.dumps(info)
         f.write(data)
 
-    new_im = Image.new('RGB', (total_width, max_height))
-
-    x_offset = 0
-    for im in images:
-        new_im.paste(im, (x_offset,0))
-        x_offset += im.size[0]
-
-    new_im.save(Path("uncheck-concat") / "test.jpg")
+    pdf_path = Path("uncheck-concat") / "test.pdf"
+    images[0].save(pdf_path, "PDF", resolution=100.0,
+                   save_all=True, append_images=images[1:])
 
 
 if __name__ == "__main__":
